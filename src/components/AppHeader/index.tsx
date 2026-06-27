@@ -85,7 +85,7 @@ export function AppHeader({ title = 'מחשבון נפח מיכל' }: AppHeaderP
   return (
     <div className="relative z-40">
       <header className="bg-gray-900 text-white px-6 py-3 flex items-center justify-center shadow-md">
-        <div className="absolute left-4 top-0 bottom-0 flex items-center gap-[10%]">
+        <div className="absolute left-4 top-0 bottom-0 flex items-center">
           <button
             onClick={() => navigate('/about')}
             className="h-[calc(100%-8px)] flex items-center hover:opacity-80 active:scale-95 transition-all duration-150"
@@ -98,7 +98,7 @@ export function AppHeader({ title = 'מחשבון נפח מיכל' }: AppHeaderP
             />
           </button>
 
-          <div className="flex flex-col leading-tight">
+          <div className="hidden md:flex flex-col leading-tight ms-12">
             <span className="text-white font-mono text-sm font-bold tabular-nums tracking-wide">
               {time.toLocaleTimeString('he-IL')}
             </span>
