@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { type LucideIcon, Droplets, Wrench, Menu, X, FlaskConical, BarChart3, Settings2 } from 'lucide-react'
 
@@ -74,22 +74,39 @@ interface AppHeaderProps {
 
 export function AppHeader({ title = 'מחשבון נפח מיכל' }: AppHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [time, setTime] = useState(() => new Date())
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const id = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div className="relative z-40">
       <header className="bg-gray-900 text-white px-6 py-3 flex items-center justify-center shadow-md">
-        <button
-          onClick={() => navigate('/about')}
-          className="absolute left-4 top-1 bottom-1 h-[calc(100%-8px)] flex items-center hover:opacity-80 active:scale-95 transition-all duration-150"
-          aria-label="אודות"
-        >
-          <img
-            src="/לוגו.png"
-            alt="S Flow Studio"
-            className="h-full w-auto object-contain rounded-lg"
-          />
-        </button>
+        <div className="absolute left-4 top-0 bottom-0 flex items-center gap-[10%]">
+          <button
+            onClick={() => navigate('/about')}
+            className="h-[calc(100%-8px)] flex items-center hover:opacity-80 active:scale-95 transition-all duration-150"
+            aria-label="אודות"
+          >
+            <img
+              src="/לוגו.png"
+              alt="S Flow Studio"
+              className="h-full w-auto object-contain rounded-lg"
+            />
+          </button>
+
+          <div className="flex flex-col leading-tight">
+            <span className="text-white font-mono text-sm font-bold tabular-nums tracking-wide">
+              {time.toLocaleTimeString('he-IL')}
+            </span>
+            <span className="text-gray-400 font-mono text-xs tabular-nums hidden sm:block">
+              {time.toLocaleDateString('he-IL')}
+            </span>
+          </div>
+        </div>
 
         <div className="flex items-center gap-3">
           <Droplets className="text-primary" size={22} />
