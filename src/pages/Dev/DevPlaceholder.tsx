@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowRight, Wrench } from 'lucide-react'
 
 interface DevPlaceholderProps {
-  pageNumber: 1 | 2 | 3
+  pageNumber: number
 }
 
 export function DevPlaceholder({ pageNumber }: DevPlaceholderProps) {
@@ -22,17 +22,6 @@ export function DevPlaceholder({ pageNumber }: DevPlaceholderProps) {
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold text-gray-700">פיתוח {pageNumber}</h2>
         <p className="text-gray-400 text-sm">עמוד זה נמצא בפיתוח פעיל – בקרוב</p>
-      </div>
-
-      <div className="flex gap-2 mt-2">
-        {([1, 2, 3] as const).map(n => (
-          <span
-            key={n}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              n === pageNumber ? 'bg-primary' : 'bg-gray-300'
-            }`}
-          />
-        ))}
       </div>
 
       <button

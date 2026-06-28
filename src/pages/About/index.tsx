@@ -20,7 +20,7 @@ const T = {
     appTitle: 'מחשבון נפח מיכל',
     desc: 'מאפשר ניטור וניהול נפח חלב במיכלים 4–14 באמצעות חישוב מדויק לפי גובה המילוי.',
     tanksInfo: '11 מיכלים | 20,000–150,000 ל׳',
-    version: 'גרסה 1.0 · 2025',
+    version: 'גרסא 1.5 · 2025',
   },
   en: {
     dir: 'ltr' as const,
@@ -30,7 +30,7 @@ const T = {
     appTitle: 'Tank Volume Calculator',
     desc: 'Monitor and manage milk volume across tanks 4–14 with precise fill-level calculations.',
     tanksInfo: '11 tanks | 20,000–150,000 L',
-    version: 'Version 1.0 · 2025',
+    version: 'Version 1.5 · 2025',
   },
 }
 

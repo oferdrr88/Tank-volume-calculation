@@ -4,12 +4,14 @@ import { getCylinderDimensions, getFillHeight } from './cylinder.utils'
 const GREEN_THRESHOLD = 93
 const COLOR_GREEN = '#16A34A'
 const COLOR_ORANGE = '#F97316'
+const OVERRIDE_MAP: Record<string, string> = { purple: '#9333EA' }
 
 interface TankCylinderProps {
   levelPercent: number
   width?: number
   height?: number
   showLabel?: boolean
+  overrideColor?: string
 }
 
 export function TankCylinder({
@@ -17,6 +19,7 @@ export function TankCylinder({
   width = 100,
   height = 160,
   showLabel = true,
+  overrideColor,
 }: TankCylinderProps) {
   const [animated, setAnimated] = useState(0)
 
@@ -39,7 +42,8 @@ export function TankCylinder({
   const greenClipY  = dim.bottomCy - greenFillH
   const orangeClipY = dim.bottomCy - totalFillH
 
-  const hasOrange = animated > GREEN_THRESHOLD
+  const fillColor = overrideColor ? (OVERRIDE_MAP[overrideColor] ?? overrideColor) : COLOR_GREEN
+  const hasOrange = !overrideColor && animated > GREEN_THRESHOLD
 
   return (
     <svg
@@ -65,8 +69,8 @@ export function TankCylinder({
 
       {/* שכבה ירוקה */}
       <g clipPath={`url(#${greenClipId})`}>
-        <rect x={dim.cx - dim.rx} y={dim.topCy} width={dim.rx * 2} height={dim.bodyHeight} fill={COLOR_GREEN} />
-        <ellipse cx={dim.cx} cy={dim.bottomCy} rx={dim.rx} ry={dim.ry} fill={COLOR_GREEN} />
+        <rect x={dim.cx - dim.rx} y={dim.topCy} width={dim.rx * 2} height={dim.bodyHeight} fill={fillColor} />
+        <ellipse cx={dim.cx} cy={dim.bottomCy} rx={dim.rx} ry={dim.ry} fill={fillColor} />
       </g>
 
       {/* שכבה כתומה (מעל 95% בלבד) */}
