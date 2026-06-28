@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { type LucideIcon, Droplets, Wrench, Menu, X, FlaskConical, BarChart3, Settings2 } from 'lucide-react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { type LucideIcon, Droplets, Wrench, Menu, X, RotateCcw, BarChart3, Settings2 } from 'lucide-react'
 
 interface NavItem {
   label: string
-  to: string
+  to?: string
+  onAction?: () => void
   Icon: LucideIcon
+  dashboardOnly?: boolean
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'בפיתוח', to: '/dev/1', Icon: FlaskConical },
+  { label: 'איפוס מיכלים', Icon: RotateCcw, dashboardOnly: true },
   { label: 'בפיתוח', to: '/dev/2', Icon: BarChart3 },
   { label: 'בפיתוח', to: '/dev/3', Icon: Settings2 },
 ]
@@ -23,14 +25,15 @@ interface NavButtonProps {
 function NavButton({ item, onClick, dropdown = false }: NavButtonProps) {
   const navigate = useNavigate()
   const [clicked, setClicked] = useState(false)
-  const { label, to, Icon } = item
+  const { label, to, onAction, Icon } = item
 
   function handleClick() {
     setClicked(true)
     setTimeout(() => {
       setClicked(false)
       onClick?.()
-      navigate(to)
+      if (onAction) onAction()
+      else if (to) navigate(to)
     }, 220)
   }
 
@@ -40,12 +43,13 @@ function NavButton({ item, onClick, dropdown = false }: NavButtonProps) {
         onClick={handleClick}
         className={`
           flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold w-full text-right
-          text-white/85 hover:bg-white/10 hover:text-white
           transition-all duration-150
-          ${clicked ? 'scale-95 bg-white/15' : ''}
+          ${clicked
+            ? 'scale-95 bg-white/15 text-white/85'
+            : 'text-white/85 hover:bg-green-500/15 hover:text-green-400'}
         `}
       >
-        <Icon size={18} className={`text-primary ${clicked ? 'animate-spin' : ''}`} />
+        <Icon size={18} className={clicked ? 'text-primary animate-spin' : 'text-primary group-hover:text-green-400'} />
         {label}
       </button>
     )
@@ -56,10 +60,10 @@ function NavButton({ item, onClick, dropdown = false }: NavButtonProps) {
       onClick={handleClick}
       className={`
         flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold
-        border border-white/20 text-white/80
-        hover:bg-white/10 hover:text-white hover:border-white/40
-        transition-all duration-150
-        ${clicked ? 'scale-95 bg-white/20' : 'scale-100'}
+        border transition-all duration-150
+        ${clicked
+          ? 'scale-95 bg-white/20 border-white/20 text-white/80'
+          : 'border-white/20 text-white/80 hover:bg-green-500/15 hover:text-green-400 hover:border-green-500/40'}
       `}
     >
       <Wrench size={13} className={clicked ? 'animate-spin' : ''} />
@@ -70,12 +74,18 @@ function NavButton({ item, onClick, dropdown = false }: NavButtonProps) {
 
 interface AppHeaderProps {
   title?: string
+  onResetTanks?: () => void
 }
 
-export function AppHeader({ title = 'מחשבון נפח מיכל' }: AppHeaderProps) {
+export function AppHeader({ title = 'מחשבון נפח מיכל', onResetTanks }: AppHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [time, setTime] = useState(() => new Date())
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const isTankPage = pathname.startsWith('/tank/')
+  const visibleItems = NAV_ITEMS
+    .filter(item => !item.dashboardOnly || !isTankPage)
+    .map(item => item.label === 'איפוס מיכלים' ? { ...item, onAction: onResetTanks } : item)
 
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 1000)
@@ -115,7 +125,7 @@ export function AppHeader({ title = 'מחשבון נפח מיכל' }: AppHeaderP
 
         {/* כפתורים – מסך גדול */}
         <div className="absolute right-4 hidden md:flex items-center gap-2">
-          {NAV_ITEMS.map((item, i) => (
+          {visibleItems.map((item, i) => (
             <NavButton key={i} item={item} />
           ))}
         </div>
@@ -133,7 +143,7 @@ export function AppHeader({ title = 'מחשבון נפח מיכל' }: AppHeaderP
       {/* תפריט נפתח – מסך קטן */}
       {menuOpen && (
         <div className="absolute top-full right-0 left-0 bg-gray-900 border-t border-white/10 shadow-lg md:hidden flex flex-col gap-1 p-3">
-          {NAV_ITEMS.map((item, i) => (
+          {visibleItems.map((item, i) => (
             <NavButton
               key={i}
               item={item}

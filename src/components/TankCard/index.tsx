@@ -16,7 +16,7 @@ export function TankCard({ tank, levelPercent }: TankCardProps) {
   return (
     <button
       onClick={() => navigate(`/tank/${tank.id}`)}
-      className="flex flex-col items-center gap-3 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:border-primary hover:scale-105 transition-all duration-200 cursor-pointer min-w-[155px]"
+      className="flex flex-col items-center gap-3 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:border-yellow-400 hover:scale-125 transition-all duration-200 cursor-pointer min-w-[155px]"
       aria-label={`מיכל ${tank.id} – ${formatPercent(levelPercent)} מלא`}
     >
       {/* כותרת */}

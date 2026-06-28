@@ -37,5 +37,12 @@ export function useTankLevels() {
     })
   }, [])
 
-  return { levels, setTankLevel }
+  const resetAllTanks = useCallback(() => {
+    const zeros: Record<number, number> = {}
+    TANKS.forEach(tank => { zeros[tank.id] = 0 })
+    setLevels(zeros)
+    saveLevels(zeros)
+  }, [])
+
+  return { levels, setTankLevel, resetAllTanks }
 }
