@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { type LucideIcon, Droplets, Menu, X, RotateCcw, Settings2, Pipette, LogOut } from 'lucide-react'
+import { type LucideIcon, Milk, Menu, X, RotateCcw, Settings2, Pipette, LogOut } from 'lucide-react'
 
 interface NavItem {
   label: string
@@ -72,7 +72,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({
-  title = 'מחשבון נפח מיכל',
+  title = 'ניהול מיכלי חלב גולמי',
   onResetTanks,
   withdrawalMode,
   onToggleWithdrawal,
@@ -113,7 +113,7 @@ export function AppHeader({
         </div>
 
         <div className="flex items-center gap-3">
-          <Droplets className="text-primary" size={22} />
+          <Milk className="text-primary" size={22} />
           <h1 className="text-lg font-bold tracking-wide">{title}</h1>
         </div>
 
