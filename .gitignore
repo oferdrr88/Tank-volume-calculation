@@ -31,6 +31,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Android build
+android/
+*.apk
+
+# local scripts
+install-android.ps1
+
 # Claude Code & AI assistant files
 .plan/
 .doc/
